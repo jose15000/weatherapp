@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form>
+            <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City Name:</label>
+            <input id="input" type="text">
+            <button>search</button>
+        </form>
+
+        <h3 id="City"></h3>
+        <p id="temp"></p>
+
+    </div>
+
+    
+
+</body>
+
+<script>
+        var inputA = document.getElementById('input');
+
+        fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=tokio&aqi=no`)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            const desiredData = data.location.name;
+            const desiredTemp = data.current.temp_c;
+            document.getElementById("City").innerHTML = desiredData;
+            document.getElementById("temp").innerHTML = desiredTemp;
+            console.log(data);
+      });
+
+</script>
+</html>
