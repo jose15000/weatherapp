@@ -5,5 +5,5 @@ A simple weather application that consumes the weatherapi and shows the weather 
 
 ## Demonstração
 
-<img src="weatherappdemo">
+<img src="weatherappdemo.png">
 
