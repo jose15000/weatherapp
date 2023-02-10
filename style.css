@@ -24,7 +24,7 @@ body{
     background-color: #121212;
 }
 
-form
+form, .content
 {
    display: flex;
    align-items: center;
@@ -70,11 +70,26 @@ h3
 
 }
 
-p
+p,h4
 {
     display: flex;
     justify-content: center;
     align-items: center;
     color:white;
     font-family: 'Roboto', sans-serif;
+}
+
+.flag
+{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+}
+
+.conditions
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
