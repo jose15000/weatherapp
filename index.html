@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    
+    <script src="jquery-3.6.3.js"></script>
     <script src="script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <form>
-            <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City Name:</label>
+            <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City:</label>
             <input id="input" type="text">
             <button onclick="getData()">search</button>
         </form>
@@ -29,17 +29,18 @@
 <script>
         
 $(document).ready(getData => {
-    const input = document.getElementById('input');
+    let input = document.querySelector('#input');
 
-    fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=${input}&aqi=no`)
+    fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=maceió&aqi=no`)
     .then(response => {
         return response.json();
     })
     .then(data => {
+        var deg = " °C"
         const desiredData = data.location.name;
         const desiredTemp = data.current.temp_c;
         document.getElementById("City").innerHTML = desiredData;
-        document.getElementById("temp").innerHTML = desiredTemp;
+        document.getElementById("temp").innerHTML = desiredTemp + deg;
         console.log(data);
   });
 });
