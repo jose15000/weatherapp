@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <script src="jquery-3.6.3.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
         <form>
             <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City:</label>
             <input id="input" type="text">
-            <button onclick="getData()">search</button>
+            <button id="button" onclick="dataWeather()">search</button>
         </form>
 
         <h3 id="City"></h3>
@@ -27,11 +27,19 @@
 </body>
 
 <script>
-        
-$(document).ready(getData => {
-    let input = document.querySelector('#input');
 
-    fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=maceió&aqi=no`)
+const input = document.querySelector("#input");
+const btn = document.querySelector("#button");
+
+btn.addEventListener("click", e =>{
+    e.preventDefault();
+    let city = input.value;
+    console.log(city);
+});
+
+const dataWeather = (city => {
+
+    fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=${input.value}&aqi=no`)
     .then(response => {
         return response.json();
     })
@@ -39,10 +47,10 @@ $(document).ready(getData => {
         var deg = " °C"
         const desiredData = data.location.name;
         const desiredTemp = data.current.temp_c;
-        document.getElementById("City").innerHTML = desiredData;
+        document.querySelector("#City").innerHTML = desiredData;
         document.getElementById("temp").innerHTML = desiredTemp + deg;
         console.log(data);
-  });
+  })
 });
 
 
