@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +14,7 @@
     <title>WeatherApp</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="container">
         <form>
             <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City:</label>
             <input id="input" type="text" autocomplete="off">
@@ -25,14 +26,28 @@
             <span ><img  class="flag" crossorigin="anonymous" src="" id="flag"></span>
         </div>
         
-        <p id="temp" ></p><br>
+        <p id="temp" style="font-size: 18px; padding-bottom: 20px;"></p><br>
 
         <div class="conditions">
             <p id="condition" ></p>
-            <span><img style="width: 32px;" id="icon" src=""></span>
+            <span><img style="width: 32px; margin-bottom: 10px;" id="icon" src=""></span>
         </div>
-        
 
+        <div class="stats" style="margin-bottom: 20px;">
+            <i class="fa-solid fa-droplet" style="color:white; padding:8px;"></i>
+            <span id="humidity"></span>
+            <i class="fa-solid fa-wind" style="color:white; padding:8px;"></i>
+            <span id="windspeed"></span>
+        </div>
+
+        <div class="forecast" >
+            <span id="forecastdate"></span>
+            <br>
+            <span id="forecastemp" style="display: flex;"></span>
+            <span id="forecastcondition"></span>
+            <span><img style="width: 32px; margin-bottom: 10px;" id="forecasticon" src=""></span>
+        
+        </div>
     </div>
 </body>
 
@@ -40,7 +55,6 @@
 
 const input = document.querySelector("#input");
 const btn = document.querySelector("#button");
-
 btn.addEventListener("click", e =>{
     e.preventDefault();
     let city = input.value;
@@ -49,25 +63,49 @@ btn.addEventListener("click", e =>{
 
 const dataWeather = (city => {
     
-    fetch(`http://api.weatherapi.com/v1/current.json?key=f548666ddc324432bd331134222912&q=${input.value}&aqi=no`)
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=f548666ddc324432bd331134222912&q=${input.value}&days=2&aqi=no`)
     .then(response => {
         return response.json();
     })
     .then(data => {
         var deg = " °C"
         const countryUrl = "https://countryflagsapi.com/png/";
-        const desiredCountry = data.location.country.toLowerCase();
+        const desiredCountry = data.location.country;
         const flag = document.querySelector("#flag");
         flag.setAttribute("src", countryUrl + desiredCountry);
-
         const icon = data.current.condition.icon;
         const desiredCondition = data.current.condition.text;
         const desiredData = data.location.name;
         const desiredTemp = data.current.temp_c;
+        const desiredTime = data.current.is_day;
+        const desiredHumidity = data.current.humidity;
+        const desiredWindSpeed = data.current.wind_kph;
+        const desiredMin = data.forecast.forecastday[1].day.avgtemp_c;
+        const forecastCondition = data.forecast.forecastday[1].day.condition.text;
+        const forecastIcon = data.forecast.forecastday[1].day.condition.icon;
+      
+
         document.querySelector("#City").innerHTML = desiredData;
         document.getElementById("temp").innerHTML = desiredTemp + deg;
         document.querySelector("#condition").innerHTML = desiredCondition;
         document.querySelector("#icon").setAttribute("src", icon);
+        document.querySelector("#humidity").innerHTML = desiredHumidity + '%' + ' | ';
+        document.querySelector('#windspeed').innerHTML = desiredWindSpeed + "km/h";
+        document.querySelector("#forecastdate").innerHTML = 'Tomorrow:';
+        document.querySelector("#forecastemp").innerHTML = desiredMin + deg;
+        document.querySelector("#forecastcondition").innerHTML = forecastCondition;
+        document.querySelector("#forecasticon").setAttribute("src",forecastIcon);
+        if(desiredTime == 0)
+        {
+            document.getElementById('container').style.backgroundImage = "url('images/background-night.jpg')";
+        }
+
+        else{
+            document.getElementById('container').style.backgroundImage = "url('images/background-day.jpg')";
+           
+        }
+        
+        
 
         console.log(data);
   })
