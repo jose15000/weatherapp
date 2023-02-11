@@ -16,7 +16,6 @@
 * _HTML_
 * _CSS_
 * _JavaScript_
-* _Weather API:
-* _https://www.weatherapi.com_
+* https://www.weatherapi.com
 
 
