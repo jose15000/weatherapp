@@ -6,7 +6,7 @@
 
 <img src="images/demo_weatherapp1.png">
 
-<img src="images/demo_weatherapp2.png">
+<img src="images/demo_weatherapp.png">
 
 ## Setup/Installation Requirements
 
