@@ -1,6 +1,6 @@
 # WeatherApp
 #### By _José Henrique_
-https://www.weatherapi.com
+
 ## Description
 #### _A weather forecast application that consumes an API and shows the weather on the screen._
 
