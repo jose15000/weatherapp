@@ -18,7 +18,7 @@
         <form>
             <label style="color:white; font-family: 'Roboto', sans-serif;" for="City">City:</label>
             <input id="input" type="text" autocomplete="off">
-            <button id="button" onclick="dataWeather()">search</button>
+            <button id="button" onclick="dataWeather()"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
 
         <div class="content">
@@ -26,91 +26,161 @@
             <span ><img  class="flag" crossorigin="anonymous" src="" id="flag"></span>
         </div>
         
-        <p id="temp" style="font-size: 18px; padding-bottom: 20px;"></p><br>
+        <div class="temp" style="margin-bottom:10px;">
+            <p id="temp" style="font-size: 26px; "></p><br>
+            <span><img style="width: 64px; margin-bottom: 10px;" id="icon" src=""></span>
+        </div>
+        
 
         <div class="conditions">
             <p id="condition" ></p>
-            <span><img style="width: 32px; margin-bottom: 10px;" id="icon" src=""></span>
         </div>
 
         <div class="stats" style="margin-bottom: 20px;">
-            <i class="fa-solid fa-droplet" style="color:white; padding:8px;"></i>
+            <i class="fa-solid fa-droplet" id="humidity-icon" style="color:white; padding:8px;"></i>
             <span id="humidity"></span>
-            <i class="fa-solid fa-wind" style="color:white; padding:8px;"></i>
+            <i class="fa-solid fa-wind" id="wind-icon" style="color:white; padding:8px;"></i>
             <span id="windspeed"></span>
         </div>
 
-        <div class="forecast" >
-            <span id="forecastdate"></span>
-            <br>
-            <span id="forecastemp" style="display: flex;"></span>
-            <span id="forecastcondition"></span>
-            <span><img style="width: 32px; margin-bottom: 10px;" id="forecasticon" src=""></span>
+        <br>
+
         
-        </div>
+            <section id="forecast-container" >
+               
+                
+                <div class="forecast" >
+                    <div style="padding-bottom: 5px;">
+                        <p id="forecastdate"></p>
+                    </div>
+                    
+                    <div>
+                    <span id="forecastemp" ></span>
+                    <span><img style="width: 50px;" id="forecasticon" src=""></span>
+                    </div>
+                    
+                </div>
+
+                <div class="forecast" >
+                    <p id="forecastdate2" style="padding-bottom: 5px;"></p>
+                    <span id="forecastemp2" ></span>
+                    <span><img style="width: 50px;" id="forecasticon2" src=""></span>
+                </div>
+                
+                <div class="forecast" >
+                    <p id="forecastdate3" style="padding-bottom: 5px;"></p>
+                    <span id="forecastemp3" ></span>
+                    <span><img style="width: 50px; margin-bottom: 10px;" id="forecasticon3" src=""></span>
+                </div>
+
+            </section>
     </div>
 </body>
 
+
 <script>
+
+var date = new Date();
+	var current_date = date.getDate() + "/"+(date.getMonth()+1);
+    var day_after = date.getDate() + 1 + "/"+(date.getMonth()+1);
+    var two_days_after = date.getDate() + 2 + "/"+(date.getMonth()+1)
+	document.getElementById("forecastdate").innerHTML = current_date;
+    document.getElementById("forecastdate2").innerHTML = day_after;
+    document.getElementById("forecastdate3").innerHTML = two_days_after;
+    
+
+
 
 const input = document.querySelector("#input");
 const btn = document.querySelector("#button");
+const container = document.getElementById("container");
+const humidityicon = document.getElementById("humidity-icon");
+const windicon = document.getElementById("wind-icon");
+const forecast = document.getElementById("forecast-container");
+
+//hiding the icons
+humidityicon.style.display = 'none';
+windicon.style.display = 'none';
+forecast.style.display = 'none';
+
+//getting input value
 btn.addEventListener("click", e =>{
     e.preventDefault();
     let city = input.value;
     console.log(city);
 });
 
+
 const dataWeather = (city => {
-    
-    fetch(`http://api.weatherapi.com/v1/forecast.json?key=f548666ddc324432bd331134222912&q=${input.value}&days=2&aqi=no`)
+    //API connection
+    fetch(`http://api.weatherapi.com/v1/forecast.json?key=f548666ddc324432bd331134222912&q=${input.value}&days=10&aqi=no&alerts=no`)
     .then(response => {
         return response.json();
     })
+
     .then(data => {
+
         var deg = " °C"
         const countryUrl = "https://countryflagsapi.com/png/";
         const desiredCountry = data.location.country;
         const flag = document.querySelector("#flag");
         flag.setAttribute("src", countryUrl + desiredCountry);
         const icon = data.current.condition.icon;
+
         const desiredCondition = data.current.condition.text;
         const desiredData = data.location.name;
         const desiredTemp = data.current.temp_c;
         const desiredTime = data.current.is_day;
         const desiredHumidity = data.current.humidity;
         const desiredWindSpeed = data.current.wind_kph;
-        const desiredMin = data.forecast.forecastday[1].day.avgtemp_c;
-        const forecastCondition = data.forecast.forecastday[1].day.condition.text;
-        const forecastIcon = data.forecast.forecastday[1].day.condition.icon;
-      
 
+        const desiredMin = data.forecast.forecastday[0].day.avgtemp_c;
+        const forecastCondition = data.forecast.forecastday[0].day.condition.text;
+        const forecastIcon = data.forecast.forecastday[0].day.condition.icon;
+
+        const desiredMin2 = data.forecast.forecastday[1].day.avgtemp_c;
+        const forecastCondition2 = data.forecast.forecastday[1].day.condition.text;
+        const forecastIcon2 = data.forecast.forecastday[1].day.condition.icon;
+
+        const desiredMin3 = data.forecast.forecastday[2].day.avgtemp_c;
+        const forecastCondition3 = data.forecast.forecastday[2].day.condition.text;
+        const forecastIcon3 = data.forecast.forecastday[2].day.condition.icon;
+        
+        windicon.style.display = '';
+        humidityicon.style.display = '';
+        forecast.style.display = '';
+        container.style.height = '400px';
         document.querySelector("#City").innerHTML = desiredData;
         document.getElementById("temp").innerHTML = desiredTemp + deg;
         document.querySelector("#condition").innerHTML = desiredCondition;
         document.querySelector("#icon").setAttribute("src", icon);
         document.querySelector("#humidity").innerHTML = desiredHumidity + '%' + ' | ';
         document.querySelector('#windspeed').innerHTML = desiredWindSpeed + "km/h";
-        document.querySelector("#forecastdate").innerHTML = 'Tomorrow:';
+
         document.querySelector("#forecastemp").innerHTML = desiredMin + deg;
-        document.querySelector("#forecastcondition").innerHTML = forecastCondition;
         document.querySelector("#forecasticon").setAttribute("src",forecastIcon);
+
+        document.querySelector("#forecastemp2").innerHTML = desiredMin2 + deg;
+        document.querySelector("#forecasticon2").setAttribute("src",forecastIcon2);
+
+        document.querySelector("#forecastemp3").innerHTML = desiredMin3 + deg;
+        document.querySelector("#forecasticon3").setAttribute("src",forecastIcon3);
+        
+
+        
         if(desiredTime == 0)
         {
             document.getElementById('container').style.backgroundImage = "url('images/background-night.jpg')";
         }
 
         else{
+
             document.getElementById('container').style.backgroundImage = "url('images/background-day.jpg')";
            
         }
-        
-        
-
         console.log(data);
   })
 });
-
 
 </script>
 </html>
