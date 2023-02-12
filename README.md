@@ -4,17 +4,18 @@
 ## Description
 #### _A weather forecast application that consumes an API and shows the weather on the screen._
 
-<img src="weatherappdemo.png">
+<img src="images/demo_weatherapp1.png">
+
+<img src="images/demo_weatherapp.png">
 
 ## Setup/Installation Requirements
 
-* _Clone repository_
+* _Clone this repository_
 
 ## Technologies Used
 * _HTML_
 * _CSS_
 * _JavaScript_
+* https://www.weatherapi.com
 
-## TODO
 
-*_add some more weather info_*
